@@ -1,25 +1,16 @@
 #include <iostream>
 #include <vector>
-#include <queue>
 using namespace std;
 
 typedef long long ll;
 
+const ll INF = 1e18;
+
 struct Edge
 {
+    int from;
     int to;
     ll cost;
-};
-
-struct Node
-{
-    ll dist;
-    int vertex;
-
-    bool operator<(const Node &other) const
-    {
-        return dist > other.dist;
-    }
 };
 
 int main()
@@ -27,7 +18,7 @@ int main()
     int n, m, k;
     cin >> n >> m >> k;
 
-    vector<vector<Edge>> adj(n + 1);
+    vector<Edge> edges;
 
     for (int i = 0; i < m; i++)
     {
@@ -35,45 +26,48 @@ int main()
         ll c;
         cin >> a >> b >> c;
 
-        adj[a].push_back({b, c});
-    }
-
-    priority_queue<Node> pq;
-
-    vector<int> cnt(n + 1, 0);
-    vector<ll> ans;
-
-    pq.push({0, 1});
-
-    while (!pq.empty())
-    {
-        Node cur = pq.top();
-        pq.pop();
-
-        int u = cur.vertex;
-        ll d = cur.dist;
-
-        if (cnt[u] >= k)
-            continue;
-
-        cnt[u]++;
-
-        if (u == n)
-            ans.push_back(d);
-
-        for (int i = 0; i < adj[u].size(); i++)
-        {
-            int v = adj[u][i].to;
-            ll w = adj[u][i].cost;
-
-            pq.push({d + w, v});
-        }
+        edges.push_back({a, b, c});
     }
 
     for (int i = 0; i < k; i++)
-        cout << ans[i] << " ";
+    {
+        int tower;
+        cin >> tower;
+        edges.push_back({0, tower, 0});
+    }
 
-    cout << endl;
+    vector<ll> dist(n + 1, INF);
+
+    dist[0] = 0;
+
+    for (int i = 0; i <= n; i++)
+    {
+        bool changed = false;
+
+        for (int j = 0; j < edges.size(); j++)
+        {
+            int u = edges[j].from;
+            int v = edges[j].to;
+            ll w = edges[j].cost;
+
+            if (dist[u] != INF && dist[u] + w < dist[v])
+            {
+                dist[v] = dist[u] + w;
+                changed = true;
+            }
+        }
+
+        if (!changed)
+            break;
+    }
+
+    for (int i = 1; i <= n; i++)
+    {
+        if (dist[i] == INF)
+            cout << "INF" << endl;
+        else
+            cout << dist[i] << endl;
+    }
 
     return 0;
 }
