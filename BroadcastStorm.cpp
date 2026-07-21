@@ -23,10 +23,7 @@ void dfs(int node, int parent)
     }
 }
 
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+int main(){
 
     int t;
     cin >> t;

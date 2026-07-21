@@ -24,7 +24,6 @@ int main()
 
         queue<pair<int, int>> q;
 
-        // Put all zombies into the queue
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
@@ -65,7 +64,6 @@ int main()
             }
         }
 
-        // Print answer
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
